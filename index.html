@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUSFORGE.COM | Physical AI Robot Forging Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forge-orange: #ff6b35;
+            --steel-blue: #4a6fa5;
+            --robot-gray: #3a3a3a;
+            --spark-yellow: #ffd700;
+            --factory-black: #1a1a1a;
+            --concrete-gray: #5a5a5a;
+            --industrial-green: #4caf50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: var(--factory-black);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 工厂车间背景 */
+        #forge-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        /* 工业网格背景 */
+        .industrial-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, rgba(90, 90, 90, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(90, 90, 90, 0.1) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: -2;
+            opacity: 0.2;
+        }
+        
+        /* 锻造火花效果 */
+        .spark-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* 机器人手臂动画 */
+        .robot-arm {
+            position: fixed;
+            bottom: -100px;
+            right: 10%;
+            width: 200px;
+            height: 300px;
+            background: linear-gradient(to top, var(--robot-gray), #2a2a2a);
+            clip-path: polygon(40% 0, 60% 0, 70% 100%, 30% 100%);
+            transform-origin: bottom center;
+            animation: robotArmMove 8s infinite alternate ease-in-out;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        @keyframes robotArmMove {
+            0% { transform: rotate(-30deg); }
+            100% { transform: rotate(30deg); }
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 工业头部 */
+        .factory-header {
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 4px solid var(--forge-orange);
+            position: relative;
+            background: linear-gradient(90deg, 
+                rgba(255, 107, 53, 0.1) 0%, 
+                transparent 20%, 
+                transparent 80%, 
+                rgba(74, 111, 165, 0.1) 100%);
+        }
+        
+        .factory-header::before {
+            content: '⚙️';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+        
+        .factory-header::after {
+            content: '🔧';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+        
+        .forge-logo {
+            text-align: center;
+        }
+        
+        .logo-line-1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo-optimus {
+            color: var(--steel-blue);
+            text-shadow: 0 0 10px rgba(74, 111, 165, 0.5);
+            display: inline-block;
+            animation: optimusPulse 4s infinite;
+        }
+        
+        @keyframes optimusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .logo-forge {
+            color: var(--forge-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            display: inline-block;
+            position: relative;
+        }
+        
+        .logo-forge::after {
+            content: '🔥';
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            font-size: 1.5rem;
+            animation: fireFlicker 1s infinite alternate;
+        }
+        
+        @keyframes fireFlicker {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .logo-line-2 {
+            font-size: 1.5rem;
+            color: var(--concrete-gray);
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 0.5rem;
+        }
+        
+        .industrial-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(58, 58, 58, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--forge-orange);
+            border-right: 4px solid var(--steel-blue);
+        }
+        
+        .stat-label {
+            color: var(--concrete-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .stat-value {
+            color: var(--spark-yellow);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* 锻造概念展示 */
+        .forge-concept {
+            background: rgba(40, 40, 40, 0.9);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .forge-concept::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--steel-blue), var(--forge-orange));
+        }
+        
+        .concept-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .concept-highlight {
+            color: var(--spark-yellow);
+            font-weight: 600;
+        }
+        
+        .concept-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            color: #ccc;
+        }
+        
+        /* 锻造过程展示 */
+        .forge-process {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .process-step {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border-top: 4px solid var(--steel-blue);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-step:hover {
+            transform: translateY(-10px);
+            border-top-color: var(--forge-orange);
+            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.2);
+        }
+        
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255, 107, 53, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .process-step:hover::before {
+            opacity: 1;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--forge-orange);
+            color: var(--factory-black);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--steel-blue);
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .step-desc {
+            color: #aaa;
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+        
+        /* 工业价格区 */
+        .industrial-pricing {
+            background: linear-gradient(135deg, rgba(58, 58, 58, 0.9), rgba(26, 26, 26, 0.9));
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(74, 111, 165, 0.3);
+            text-align: center;
+            position: relative;
+        }
+        
+        .industrial-pricing::before {
+            content: '🏭';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: var(--factory-black);
+            padding: 0 1rem;
+        }
+        
+        .forge-price {
+            margin-bottom: 2rem;
+        }
+        
+        .price-amount {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--spark-yellow);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-label {
+            color: var(--concrete-gray);
+            font-size: 1.1rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* 三期付款 - 锻造阶段 */
+        .forge-payment-plan {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .forge-phase {
+            background: rgba(40, 40, 40, 0.8);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 107, 53, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .forge-phase:hover {
+            transform: translateY(-5px);
+            border-color: var(--forge-orange);
+        }
+        
+        .phase-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--steel-blue);
+        }
+        
+        .phase-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--spark-yellow);
+            margin-bottom: 0.5rem;
+        }
+        
+        .phase-title {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .phase-desc {
+            color: #888;
+            font-size: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        /* 工业按钮 */
+        .forge-button {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--forge-orange), var(--spark-yellow));
+            color: var(--factory-black);
+            font-weight: 700;
+            font-size: 1.3rem;
+            padding: 1.3rem 4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+            font-family: 'Exo 2', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .forge-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.5);
+            background: linear-gradient(90deg, var(--spark-yellow), var(--forge-orange));
+        }
+        
+        .forge-button::after {
+            content: '⚡';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+        
+        /* 工业联系方式 */
+        .forge-contact {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            text-align: center;
+            position: relative;
+        }
+        
+        .forge-contact::before {
+            content: '🔧';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            background: var(--factory-black);
+            padding: 0 1rem;
+        }
+        
+        .contact-title {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--steel-blue);
+        }
+        
+        .contact-subtitle {
+            color: var(--concrete-gray);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .forge-email {
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--spark-yellow);
+            background: rgba(255, 215, 0, 0.1);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 1rem 0;
+            text-decoration: none;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .forge-email:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .contact-note {
+            margin-top: 1.5rem;
+            color: #777;
+            font-size: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        /* 工业页脚 */
+        .factory-footer {
+            margin-top: 5rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 2px solid rgba(58, 58, 58, 0.8);
+            color: #666;
+            position: relative;
+        }
+        
+        .factory-footer::before {
+            content: '🏗️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+        }
+        
+        .footer-info {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .factory-status {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--industrial-green);
+            border-radius: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+            animation: factoryPulse 2s infinite;
+        }
+        
+        @keyframes factoryPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo-line-1 {
+                font-size: 2.5rem;
+            }
+            
+            .industrial-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .forge-payment-plan {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .forge-process {
+                grid-template-columns: 1fr;
+            }
+            
+            .price-amount {
+                font-size: 3.5rem;
+            }
+            
+            .forge-email {
+                font-size: 1.2rem;
+                padding: 0.8rem 1.5rem;
+                word-break: break-all;
+            }
+            
+            .robot-arm {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 锻造车间背景 -->
+    <canvas id="forge-canvas"></canvas>
+    <div class="industrial-grid"></div>
+    <div class="robot-arm"></div>
+    
+    <div class="container">
+        <header class="factory-header">
+            <div class="forge-logo">
+                <div class="logo-line-1">
+                    <span class="logo-optimus">OPTIMUS</span><span class="logo-forge">FORGE</span>
+                </div>
+                <div class="logo-line-2">PHYSICAL AI ROBOT FORGING PLATFORM</div>
+                
+                <div class="industrial-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">DOMAIN</div>
+                        <div class="stat-value">OPTIMUSFORGE.COM</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">CONCEPT</div>
+                        <div class="stat-value">ROBOT FORGING</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">CHARACTERS</div>
+                        <div class="stat-value">13 + ".com"</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <section class="forge-concept">
+                <h1 class="concept-title">FORGING THE NEXT GENERATION OF PHYSICAL AI</h1>
+                <p class="concept-description">
+                    <span class="concept-highlight">OptimusForge</span> represents the industrial-scale production of intelligent robotic systems. 
+                    Combining the <span class="concept-highlight">Optimus</span> (perfect, optimal) with <span class="concept-highlight">Forge</span> (creation, fabrication), 
+                    this domain embodies the future of AI-powered robotic manufacturing and physical automation.
+                </p>
+            </section>
+            
+            <section class="forge-process">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">🔨</div>
+                    <div class="step-title">AI DESIGN FORGING</div>
+                    <div class="step-desc">
+                        Generative AI creates optimal robot designs based on physical constraints, 
+                        material properties, and functional requirements.
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">⚙️</div>
+                    <div class="step-title">PHYSICAL FABRICATION</div>
+                    <div class="step-desc">
+                        Automated production lines manufacture robot components with precision 
+                        measured in microns, supervised by machine vision AI.
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🤖</div>
+                    <div class="step-title">NEURAL INTEGRATION</div>
+                    <div class="step-desc">
+                        On-board AI systems are integrated and calibrated, creating robots 
+                        that learn, adapt, and optimize their performance in real-time.
+                    </div>
+                </div>
+            </section>
+            
+            <section class="industrial-pricing">
+                <div class="forge-price">
+                    <div class="price-amount">$38,500</div>
+                    <div class="price-label">INDUSTRIAL DOMAIN ACQUISITION</div>
+                </div>
+                
+                <div class="price-label" style="margin-bottom: 2rem;">
+                    3-PHASE FORGING PROCESS • INDUSTRIAL-SCALE INVESTMENT
+                </div>
+                
+                <div class="forge-payment-plan">
+                    <div class="forge-phase">
+                        <div class="phase-icon">🔨</div>
+                        <div class="phase-amount">$12,833</div>
+                        <div class="phase-title">FORGING PHASE</div>
+                        <div class="phase-desc">Initial domain transfer and conceptual framework</div>
+                    </div>
+                    <div class="forge-phase">
+                        <div class="phase-icon">⚙️</div>
+                        <div class="phase-amount">$12,833</div>
+                        <div class="phase-title">ASSEMBLY PHASE</div>
+                        <div class="phase-desc">Mid-term completion and technical documentation</div>
+                    </div>
+                    <div class="forge-phase">
+                        <div class="phase-icon">🤖</div>
+                        <div class="phase-amount">$12,834</div>
+                        <div class="phase-title">ACTIVATION PHASE</div>
+                        <div class="phase-desc">Final transfer and industrial implementation</div>
+                    </div>
+                </div>
+                
+                <button class="forge-button" id="acquireButton">
+                    INITIATE FORGING PROCESS
+                </button>
+            </section>
+            
+            <section class="forge-contact" id="contact">
+                <div class="contact-title">FORGE CONTROL ROOM ACCESS</div>
+                <div class="contact-subtitle">DIRECT LINE TO INDUSTRIAL ARCHITECT</div>
+                <div class="forge-email" id="emailDisplay">
+                    JOSHUA369X@GMAIL.COM
+                </div>
+                <div class="contact-note">
+                    24/7 FORGE OPERATION • INDUSTRIAL-GRADE ENCRYPTION • PRODUCTION INQUIRIES
+                </div>
+            </section>
+        </main>
+        
+        <footer class="factory-footer">
+            <div class="footer-info">
+                OPTIMUSFORGE.COM | PHYSICAL AI ROBOT FORGING PLATFORM
+                <span class="factory-status">FORGE ACTIVE • PRODUCTION RUNNING</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 锻造车间动画
+        const canvas = document.getElementById('forge-canvas');
+        const ctx = canvas.getContext('2d');
+        let sparks = [];
+        const sparkCount = 50;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        class Spark {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 4 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = Math.random() > 0.7 ? 'rgba(255, 107, 53, 0.9)' : 
+                            Math.random() > 0.4 ? 'rgba(255, 215, 0, 0.9)' : 'rgba(74, 111, 165, 0.9)';
+                this.life = Math.random() * 100 + 50;
+                this.decay = Math.random() * 2 + 1;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                
+                // 边界反弹
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -0.8;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -0.8;
+                
+                return this.life > 0;
+            }
+            
+            draw() {
+                const alpha = this.life / 150;
+                
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color.replace('0.9', alpha.toString());
+                ctx.fill();
+                
+                // 火花拖尾
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x - this.speedX * 3, this.y - this.speedY * 3);
+                ctx.strokeStyle = this.color.replace('0.9', (alpha * 0.5).toString());
+                ctx.lineWidth = this.size * 0.5;
+                ctx.stroke();
+            }
+        }
+        
+        function initSparks() {
+            sparks = [];
+            for (let i = 0; i < sparkCount; i++) {
+                sparks.push(new Spark());
+            }
+        }
+        
+        function createForgeEffect() {
+            // 随机创建新的火花
+            if (Math.random() < 0.1) {
+                for (let i = 0; i < 3; i++) {
+                    sparks.push(new Spark());
+                }
+            }
+            
+            // 绘制金属背景
+            ctx.fillStyle = 'rgba(26, 26, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制钢铁纹理
+            if (Math.random() < 0.02) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, 100);
+                gradient.addColorStop(0, 'rgba(74, 111, 165, 0.1)');
+                gradient.addColorStop(1, 'rgba(74, 111, 165, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x - 100, y - 100, 200, 200);
+            }
+            
+            // 更新和绘制火花
+            sparks = sparks.filter(spark => {
+                spark.update();
+                spark.draw();
+                return spark.life > 0;
+            });
+            
+            // 绘制锻造锤击效果
+            if (Math.random() < 0.03) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 50, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, 50);
+                gradient.addColorStop(0, 'rgba(255, 107, 53, 0.3)');
+                gradient.addColorStop(1, 'rgba(255, 107, 53, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+        }
+        
+        function animateForge() {
+            createForgeEffect();
+            requestAnimationFrame(animateForge);
+        }
+        
+        initSparks();
+        animateForge();
+        
+        // 交互功能
+        const acquireButton = document.getElementById('acquireButton');
+        const emailDisplay = document.getElementById('emailDisplay');
+        
+        acquireButton.addEventListener('click', function() {
+            const originalText = this.textContent;
+            this.textContent = '⚙️ ENGAGING FORGING SEQUENCE...';
+            this.style.background = 'linear-gradient(90deg, var(--steel-blue), var(--forge-orange))';
+            
+            setTimeout(() => {
+                this.textContent = '🔨 FORGING DOMAIN TRANSFER...';
+                
+                setTimeout(() => {
+                    this.textContent = '🤖 AI INTEGRATION COMPLETE!';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'mailto:joshua369x@gmail.com?subject=OptimusForge.com%20Domain%20Acquisition&body=I%27m%20interested%20in%20acquiring%20OptimusForge.com%20for%20%2438,500%20via%20the%203-phase%20forging%20process.%20Please%20provide%20details.';
+                        
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                            this.style.background = 'linear-gradient(90deg, var(--forge-orange), var(--spark-yellow))';
+                        }, 2000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        });
+        
+        emailDisplay.addEventListener('click', function() {
+            const originalText = this.textContent;
+            this.textContent = '📧 EMAIL FORGED TO CLIPBOARD!';
+            this.style.background = 'rgba(76, 175, 80, 0.2)';
+            this.style.color = '#4caf50';
+            
+            navigator.clipboard.writeText('joshua369x@gmail.com').then(() => {
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.background = 'rgba(255, 215, 0, 0.1)';
+                    this.style.color = 'var(--spark-yellow)';
+                }, 1500);
+            });
+        });
+        
+        // 工业键盘快捷键
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') {
+                // 触发锻造效果
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const spark = new Spark();
+                        spark.x = canvas.width / 2;
+                        spark.y = canvas.height / 2;
+                        spark.speedX = (Math.random() - 0.5) * 10;
+                        spark.speedY = (Math.random() - 0.5) * 10;
+                        spark.size = Math.random() * 6 + 2;
+                        sparks.push(spark);
+                    }, i * 50);
+                }
+            }
+        });
+        
+        // 页面加载效果
+        window.addEventListener('load', () => {
+            document.querySelector('.logo-line-1').style.opacity = '1';
+            
+            // 延迟显示过程步骤
+            const steps = document.querySelectorAll('.process-step');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                    step.style.transform = 'translateY(0)';
+                }, 300 + index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
