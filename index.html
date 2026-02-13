@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OptimusForge.com - The premier domain for Autonomous Manufacturing, Recursive Robotics, and Space-Based AI Foundries. Where robots build robots.">
-    <meta name="keywords" content="optimus forge, robot manufacturing, self-replicating AI, space foundry, autonomous factory, exawatt compute, future robotics">
-    <meta name="author" content="OptimusForge Ventures">
-    <meta property="og:title" content="OptimusForge.com | Let Robots Forge Robots">
-    <meta property="og:description" content="The infrastructure for the next industrial revolution. Secure the domain for recursive AI manufacturing.">
-    <meta property="og:url" content="https://optimusforge.com">
+    <meta name="description" content="OptimusForge.com - The premier domain for Autonomous Manufacturing, Recursive Robotics, and Space-Based AI Foundries.">
+    <meta name="keywords" content="optimus forge, robot manufacturing, self-replicating AI, space foundry, autonomous factory, exawatt compute">
     <title>OptimusForge.com | The Future of Recursive Robotics</title>
     
     <style>
@@ -16,54 +12,39 @@
             --optimus-cyan: #00f3ff;
             --forge-orange: #ff5e00;
             --forge-red: #ff0000;
-            --carbon-fiber: #111111;
-            --steel: #2a2a2a;
-            --text-gray: #b0b0b0;
+            --dark-metal: #0a0a0f;
+            --hologram-grid: rgba(0, 243, 255, 0.05);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace; /* Monospace for industrial/code feel */
+            font-family: 'Courier New', Courier, monospace;
         }
 
         body {
-            background-color: #050505;
+            background-color: #020202;
             color: #ffffff;
             overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* --- DYNAMIC BACKGROUND (The Factory Grid) --- */
+        /* --- DYNAMIC BACKGROUND --- */
         .grid-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             background: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            perspective: 500px;
+                linear-gradient(var(--hologram-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--hologram-grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridPulse 10s infinite alternate;
         }
-
-        .sparks {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(white 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.1;
-            animation: moveSparks 100s linear infinite;
-        }
-
-        @keyframes moveSparks {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
-        }
+        
+        @keyframes gridPulse { from { opacity: 0.3; } to { opacity: 0.6; } }
 
         /* --- HEADER --- */
         header {
@@ -71,113 +52,164 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             z-index: 100;
-            border-bottom: 2px solid #222;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
         }
 
         .logo-container {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             letter-spacing: -1px;
             text-transform: uppercase;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            cursor: pointer;
         }
 
-        /* Optimus: Mechanical/Cold Effect */
-        .optimus {
-            color: var(--optimus-cyan);
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-            display: inline-block;
-            animation: mechSlide 3s infinite alternate;
+        .optimus { color: var(--optimus-cyan); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); display: inline-block; animation: mechSlide 3s infinite alternate; }
+        .forge { 
+            background: linear-gradient(180deg, #ffae00, var(--forge-orange)); 
+            -webkit-background-clip: text; background-clip: text; color: transparent; 
+            display: inline-block; animation: moltenPulse 2s infinite; 
         }
+        .dot-com { font-size: 1rem; color: #fff; opacity: 0.5; animation: digitalFlicker 4s infinite steps(5); }
 
-        /* Forge: Molten/Hot Effect */
-        .forge {
-            background: linear-gradient(180deg, #ffae00, var(--forge-orange), var(--forge-red));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            animation: moltenPulse 2s infinite;
-            filter: drop-shadow(0 0 5px rgba(255, 94, 0, 0.5));
-        }
-
-        /* .com: Digital Flicker */
-        .dot-com {
-            font-size: 1rem;
-            color: #fff;
-            opacity: 0.5;
-            animation: digitalFlicker 4s infinite steps(5);
-        }
-
-        @keyframes mechSlide {
-            0% { letter-spacing: -1px; }
-            100% { letter-spacing: 2px; }
-        }
-
-        @keyframes moltenPulse {
-            0% { filter: drop-shadow(0 0 2px rgba(255, 94, 0, 0.3)); }
-            50% { filter: drop-shadow(0 0 15px rgba(255, 94, 0, 0.8)); }
-            100% { filter: drop-shadow(0 0 2px rgba(255, 94, 0, 0.3)); }
-        }
-
-        @keyframes digitalFlicker {
-            0%, 100% { opacity: 0.3; }
-            5% { opacity: 1; }
-            10% { opacity: 0.3; }
-        }
+        @keyframes mechSlide { 0% { letter-spacing: -1px; } 100% { letter-spacing: 1px; } }
+        @keyframes moltenPulse { 0%, 100% { filter: drop-shadow(0 0 2px var(--forge-orange)); } 50% { filter: drop-shadow(0 0 10px var(--forge-orange)); } }
+        @keyframes digitalFlicker { 0%, 100% { opacity: 0.3; } 5% { opacity: 1; } 10% { opacity: 0.3; } }
 
         /* --- HERO SECTION --- */
         .hero {
-            min-height: 85vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 80px 20px 20px 20px;
+            position: relative;
         }
 
         .hero-quote-box {
-            border-left: 5px solid var(--optimus-cyan);
-            border-right: 5px solid var(--forge-orange);
-            padding: 2rem;
-            background: rgba(0,0,0,0.6);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         .hero-quote {
             font-family: 'Segoe UI', sans-serif;
-            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
             font-weight: 800;
-            color: #fff;
             text-transform: uppercase;
             line-height: 1.2;
-            margin-bottom: 1rem;
-            
-            /* Gradient Text */
-            background: linear-gradient(90deg, var(--optimus-cyan) 0%, #fff 50%, var(--forge-orange) 100%);
+            background: linear-gradient(90deg, var(--optimus-cyan), #fff, var(--forge-orange));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            
-            /* Animation */
-            animation: textScan 6s ease-in-out infinite;
+            animation: gradientShift 5s infinite linear;
             background-size: 200% auto;
         }
 
-        @keyframes textScan {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes gradientShift { to { background-position: 200% center; } }
+
+        /* --- 3D ASI FORGE VISUALIZATION (Pure CSS) --- */
+        .forge-scene-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            perspective: 800px;
+            margin: 2rem auto;
+        }
+
+        .platform {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0,243,255,0.1) 0%, transparent 70%);
+            border: 1px solid rgba(0,243,255,0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+            box-shadow: 0 0 30px rgba(0,243,255,0.1);
+        }
+
+        /* The Hammer Arm */
+        .robot-arm {
+            width: 40px;
+            height: 150px;
+            background: linear-gradient(180deg, var(--dark-metal), #333);
+            border: 1px solid var(--optimus-cyan);
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            transform-origin: top center;
+            animation: hammerStrike 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+            box-shadow: 0 0 15px rgba(0,243,255,0.2);
+            z-index: 2;
+        }
+
+        .hammer-head {
+            width: 60px;
+            height: 40px;
+            background: #222;
+            border: 2px solid var(--optimus-cyan);
+            position: absolute;
+            bottom: -20px;
+            left: -10px;
+            box-shadow: 0 0 10px var(--optimus-cyan);
+        }
+
+        /* The Molten Core being forged */
+        .energy-core {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #fff, var(--forge-orange));
+            border-radius: 50%;
+            position: absolute;
+            top: 55%; left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 1;
+            box-shadow: 0 0 40px var(--forge-orange);
+            animation: coreReact 2s infinite;
+        }
+
+        /* Impact Shockwave */
+        .shockwave {
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--forge-orange);
+            border-radius: 50%;
+            position: absolute;
+            top: 60%; left: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+            opacity: 0;
+            animation: shockwaveExpand 2s infinite;
+        }
+
+        @keyframes hammerStrike {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-80px); } /* Lift */
+            50% { transform: translateX(-50%) translateY(10px); } /* Hit */
+            55% { transform: translateX(-50%) translateY(0); } /* Settle */
+        }
+
+        @keyframes coreReact {
+            0%, 40%, 100% { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3, 0.8); filter: brightness(2); } /* Squish on impact */
+        }
+
+        @keyframes shockwaveExpand {
+            0%, 49% { width: 10px; height: 10px; opacity: 0; }
+            50% { opacity: 1; }
+            80% { width: 250px; height: 250px; opacity: 0; border-width: 0; }
+            100% { opacity: 0; }
         }
 
         .sub-hero {
-            margin-top: 1.5rem;
-            font-size: 1.1rem;
-            color: var(--text-gray);
+            margin-top: 1rem;
+            color: #888;
             max-width: 600px;
         }
 
@@ -188,12 +220,10 @@
             margin-bottom: 3rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            border-bottom: 1px solid #333;
-            display: inline-block;
-            padding-bottom: 10px;
+            color: var(--optimus-cyan);
         }
 
-        .grid-section { padding: 5rem 10%; text-align: center; }
+        .grid-section { padding: 5rem 10%; }
 
         .grid-container {
             display: grid;
@@ -202,53 +232,37 @@
         }
 
         .card {
-            background: #0f0f13;
-            border: 1px solid #333;
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid #222;
             padding: 1.5rem;
-            text-align: left;
             transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
-
-        /* Tech corner accent */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-top: 30px solid var(--optimus-cyan);
-            border-right: 30px solid transparent;
-            opacity: 0.5;
-        }
-
+        
         .card:hover {
             border-color: var(--forge-orange);
+            box-shadow: 0 0 20px rgba(255, 94, 0, 0.15);
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 94, 0, 0.1);
         }
 
-        .card h3 {
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .card p { color: #888; font-size: 0.9rem; }
+        .card h3 { color: #fff; margin-bottom: 0.5rem; font-family: 'Segoe UI', sans-serif; }
+        .card p { color: #999; font-size: 0.9rem; }
 
         /* --- PRICING --- */
         .pricing-section {
             padding: 5rem 5%;
             text-align: center;
-            background: linear-gradient(0deg, #000 0%, #0a0a0a 100%);
-            border-top: 1px solid #222;
+            background: linear-gradient(180deg, transparent, #000);
+            position: relative;
+            z-index: 10;
         }
 
         .price-display {
             font-size: 4rem;
             font-weight: bold;
             color: #fff;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -256,18 +270,18 @@
             display: inline-block;
             margin-top: 10px;
             margin-bottom: 30px;
-            padding: 5px 15px;
-            border: 1px solid var(--optimus-cyan);
+            padding: 5px 20px;
+            border-radius: 20px;
+            background: rgba(0, 243, 255, 0.1);
             color: var(--optimus-cyan);
-            font-size: 1.2rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         /* --- BUTTONS --- */
         .cta-btn {
-            background: var(--forge-orange);
-            color: #000;
+            background: linear-gradient(45deg, var(--forge-orange), #ff2200);
+            color: #fff;
             padding: 1.2rem 3rem;
             font-size: 1.2rem;
             font-weight: 800;
@@ -275,27 +289,22 @@
             border: none;
             cursor: pointer;
             margin: 10px;
-            clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
-            transition: all 0.2s;
+            clip-path: polygon(15% 0, 100% 0, 100% 70%, 85% 100%, 0 100%, 0 30%);
+            transition: all 0.3s;
         }
-
         .cta-btn:hover {
-            background: #ff7b00;
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 94, 0, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 60, 0, 0.6);
         }
 
         .contact-btn {
             background: transparent;
             border: 1px solid #fff;
-            color: #fff;
+            clip-path: none;
         }
-        .contact-btn:hover {
-            background: #fff;
-            color: #000;
-        }
+        .contact-btn:hover { background: #fff; color: #000; }
 
-        /* --- FOOTER & DISCLAIMER --- */
+        /* --- FOOTER --- */
         footer {
             padding: 3rem 10%;
             background: #000;
@@ -306,17 +315,16 @@
         }
 
         .disclaimer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #333;
-            line-height: 1.4;
+            margin-top: 1rem;
+            line-height: 1.5;
+            opacity: 0.7;
         }
 
         /* Toast */
         #toast {
             visibility: hidden;
             min-width: 250px;
-            background-color: #333;
+            background-color: #111;
             color: var(--optimus-cyan);
             border: 1px solid var(--optimus-cyan);
             text-align: center;
@@ -328,6 +336,7 @@
             transform: translateX(-50%);
             font-family: 'Segoe UI', sans-serif;
             font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
         }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
@@ -337,32 +346,41 @@
 </head>
 <body>
 
-    <!-- Background -->
-    <div class="grid-bg">
-        <div class="sparks"></div>
-    </div>
+    <!-- Holographic Grid Background -->
+    <div class="grid-bg"></div>
 
     <header>
         <div class="logo-container">
             <span class="optimus">OPTIMUS</span><span class="forge">FORGE</span><span class="dot-com">.COM</span>
         </div>
-        <a href="#purchase" style="color:#fff; text-decoration:none; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Acquire Asset</a>
+        <a href="#purchase" style="color:var(--optimus-cyan); text-decoration:none; font-size:0.9rem; text-transform:uppercase; border:1px solid var(--optimus-cyan); padding:5px 15px;">Acquire</a>
     </header>
 
     <main>
-        <!-- Hero -->
+        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-quote-box">
                 <h1 class="hero-quote">Let AI define AI,<br>Let Robots Forge Robots</h1>
             </div>
+
+            <!-- ASI FORGE VISUALIZATION -->
+            <div class="forge-scene-container">
+                <div class="platform"></div>
+                <div class="robot-arm">
+                    <div class="hammer-head"></div>
+                </div>
+                <div class="energy-core"></div>
+                <div class="shockwave"></div>
+            </div>
+
             <p class="sub-hero">
-                The architecture for recursive manufacturing, space-based foundries, and the age of autonomous creation.
+                Constructing the infrastructure for Recursive Manufacturing & Orbital Foundries.
             </p>
         </section>
 
         <!-- 12 Areas Section -->
         <section class="grid-section">
-            <h2 class="section-title">The Future of Fabrication</h2>
+            <h2 class="section-title">ASI Manufacturing Sectors</h2>
             <div class="grid-container">
                 <div class="card">
                     <h3>1. Recursive Robotics</h3>
@@ -417,18 +435,15 @@
 
         <!-- Pricing Section -->
         <section class="pricing-section" id="purchase">
-            <p style="color:var(--forge-orange); text-transform:uppercase; letter-spacing:2px; margin-bottom:1rem;">Premium Domain Asset</p>
+            <p style="color:#888; text-transform:uppercase; letter-spacing:2px; margin-bottom:1rem;">Strategic Asset Valuation</p>
             <div class="price-display">$7,000 USD</div>
             <div class="installments">7 Monthly Installments Available</div>
             <br>
             
-            <!-- Buy Button with Spaceship Link -->
             <button class="cta-btn" onclick="handleBuy()">
                 Initiate Purchase
             </button>
             <br>
-            
-            <!-- Contact Button -->
             <button class="cta-btn contact-btn" onclick="copyEmail()">
                 Contact Seller
             </button>
@@ -437,11 +452,9 @@
 
     <footer>
         <p>&copy; 2026 OptimusForge.com. All rights reserved.</p>
-        <p>Related: Tesla Bot | Industrial AI | Space X Manufacturing | Future Tech</p>
         
-        <!-- Disclaimer -->
         <div class="disclaimer">
-            <strong>Disclaimer:</strong> OptimusForge.com is a premium domain name offered for sale. It is not affiliated with, endorsed by, or connected to Tesla Inc., Boston Dynamics, or any specific robotics manufacturer. "Optimus" is used here in its general sense (Latin for "Best") or mythological context. Any reference to specific products or companies is for conceptual visualization of the domain's potential use cases only.
+            <strong>Disclaimer:</strong> OptimusForge.com is a premium domain name offered for sale. It is not affiliated with, endorsed by, or connected to Tesla Inc., Boston Dynamics, or any specific robotics manufacturer. "Optimus" is used here in its general sense (Latin for "Best") or mythological context.
         </div>
     </footer>
 
@@ -464,7 +477,6 @@
 
         // Buy Action
         function handleBuy() {
-            // Opens the specific Spaceship checkout link
             const url = "https://www.spaceship.com/s/buy/optimusforge.com/7FBs7tWqo1ARokMC";
             window.open(url, '_blank');
         }
